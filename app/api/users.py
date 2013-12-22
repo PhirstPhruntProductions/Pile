@@ -44,6 +44,8 @@ class UserAPI(Resource):
   def delete(self, id):
     pass
 
+api.add_resource(UserAPI, '/api/user/<int:id>', endpoint = 'user')
+
 class UserListAPI(Resource):
   def __init__(self):
     pass
@@ -54,8 +56,16 @@ class UserListAPI(Resource):
   def post(self):
     pass
 
-api.add_resource(UserAPI, '/api/user/<int:id>', endpoint = 'user')
 api.add_resource(UserListAPI, '/api/users/', endpoint = 'users')
+
+class UsersByCollegeAPI(Resource):
+  def _init__(self):
+    pass
+
+  def get(self, id):
+    pass
+
+api.add_resource(UsersByCollegeAPI, '/api/college/<int:id>/users', endpoint = 'users_by_college')
 
 
 
