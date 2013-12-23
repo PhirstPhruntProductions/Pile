@@ -58,6 +58,7 @@ class CollegeListAPI(Resource):
 
 api.add_resource(CollegeListAPI, '/api/colleges/', endpoint = 'colleges')
 
+#Potentially unnecessary
 class CollegeByNameAPI(Resource):
   def __init__(self):
     pass
