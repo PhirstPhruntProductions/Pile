@@ -9,9 +9,6 @@ from app import app
 
 api = Api(app)
 
-colege_fields = {
-
-}
 
 def collegeExists(id):
   pass
@@ -31,6 +28,10 @@ def deleteCollege(id):
 def getAllColleges():
   pass
 
+college_fields = {
+
+}
+
 class CollegeAPI(Resource):
   def __init__(self):
     pass
@@ -46,6 +47,10 @@ class CollegeAPI(Resource):
 
 api.add_resource(CollegeAPI, '/api/college/<int:id>', endpoint = 'college')
 
+colleges_fields = {
+
+}
+
 class CollegeListAPI(Resource):
   def __init__(self):
     pass
@@ -59,6 +64,9 @@ class CollegeListAPI(Resource):
 api.add_resource(CollegeListAPI, '/api/colleges/', endpoint = 'colleges')
 
 #Potentially unnecessary
+colleges_by_name_fields = {
+
+}
 class CollegeByNameAPI(Resource):
   def __init__(self):
     pass

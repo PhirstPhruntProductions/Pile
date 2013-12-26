@@ -9,10 +9,6 @@ from app import app
 
 api = Api(app)
 
-item_fields = {
-
-}
-
 def itemExists(id):
   pass
 
@@ -34,6 +30,10 @@ def getAllItemsByCollege(college):
 def getAllItemsByUser(user):
   pass
 
+item_fields = {
+
+}
+
 class ItemAPI(Resource):
   def __init__(self):
     pass
@@ -49,6 +49,10 @@ class ItemAPI(Resource):
 
 api.add_resource(ItemAPI, '/api/item/<int:id>', endpoint = 'item')
 
+items_fields = {
+
+}
+
 class ItemListAPI(Resource):
   def __init__(self):
     pass
@@ -61,6 +65,10 @@ class ItemListAPI(Resource):
 
 api.add_resource(ItemListAPI, '/api/items/', endpoint = 'items')
 
+items_by_college_fields = {
+
+}
+
 class ItemsByCollegeAPI(Resource):
   def _init__(self):
     pass
@@ -69,6 +77,10 @@ class ItemsByCollegeAPI(Resource):
     pass
 
 api.add_resource(ItemsByCollegeAPI, '/api/college/<int:id>/items', endpoint = 'items_by_college')
+
+items_by_user_fields = {
+
+}
 
 class ItemsByUserAPI(Resource):
   def __init__(self):
