@@ -91,5 +91,18 @@ class ItemsByUserAPI(Resource):
 
 api.add_resource(ItemsByUserAPI, '/api/user/<int:id>/items', endpoint = 'items_by_user')
 
+items_by_type_fields = {
+
+}
+
+class ItemsByTypeAPI(Resource):
+  def __init__(self):
+    pass
+
+  def get(self, id):
+    pass
+
+api.add_resource(ItemsByTypeAPI, '/api/<string:type>/items', endpoint = 'items_by_type')
+
 
 
