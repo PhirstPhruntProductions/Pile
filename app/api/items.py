@@ -99,10 +99,23 @@ class ItemsByTypeAPI(Resource):
   def __init__(self):
     pass
 
-  def get(self, id):
+  def get(self, type):
     pass
 
 api.add_resource(ItemsByTypeAPI, '/api/<string:type>/items', endpoint = 'items_by_type')
+
+items_by_search_fields = {
+
+}
+
+class ItemsByTextSearchAPI(Resource):
+  def __init__(self):
+    pass
+
+  def get(self, text):
+    pass
+
+api.add_resource(ItemsByTypeAPI, '/api/items/search/<string:text>', endpoint = 'items_by_search')
 
 
 
