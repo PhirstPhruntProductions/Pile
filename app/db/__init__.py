@@ -1,5 +1,5 @@
 ###########################################################
-# The package for the Pile Database Models
+# The package for the Pile Database Classes
 ###########################################################
 
 # Import statements go here
