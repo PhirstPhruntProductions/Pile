@@ -7,9 +7,9 @@
 from flask import Flask
 from flask.ext.mail import Mail
 from flask.ext.sqlalchemy import SQLAlchemy
-from config import basedir, ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USE_SSL, MAIL_USERNAME, MAIL_PASSWORD, UPLOAD_FOLDER, SECRET_KEY
 
 app = Flask(__name__)
+app.config.from_object('config')
 
 mail = Mail()
 mail.init_app(app)
@@ -20,7 +20,7 @@ db = SQLAlchemy(app)
 from app.views import *
 
 #-----Models form DB
-from models.user import *
+from models import user
 from models.college import *
 from models.item import *
 
@@ -28,4 +28,6 @@ from models.item import *
 from api.users import *
 from api.colleges import *
 from api.items import *
+
+db.create_all()
 

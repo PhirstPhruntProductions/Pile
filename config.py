@@ -14,6 +14,7 @@ MAIL_PASSWORD = 'CampusStew18'
 
 #-----Config Database
 SQLALCHEMY_DATABASE_URI = 'mysql://achumbley:CampusStew18@localhost/dev'
+SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
 #-----Config Admins
