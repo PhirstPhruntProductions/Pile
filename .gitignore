@@ -1,0 +1,9 @@
+# Python files
+*.pyc
+*.pyo
+
+# swap files
+*.swp
+
+# uploads folder
+app/uploads/
