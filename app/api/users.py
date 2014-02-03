@@ -2,63 +2,90 @@
 #Imports go here
 from flask import jsonify, abort, request, make_response, url_for, g, flash, redirect, render_template
 from flask.ext.restful import Api, Resource, reqparse, fields, marshal, marshal_with
-from app import app
+from app import app, db
 
 
 #------------------------------------------------
 
 api = Api(app)
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 def userExists(id):
-  pass
+  if User.query.filter_by(id=id).first():
+    return True
+  return False
 
 def getUser(id):
-  pass
+  return User.query.filter_by(id=id).first()
 
 def addUser(user):
-  pass
+  db.session.add(user)
+  db.session.commit()
 
 def updateUser(**kwargs):
   pass
 
 def deleteUser(id):
-  pass
+  user = User.query.filter_by(id=id).first()
+  db.session.delete(user)
+  db.session.commit()
+
+def getAllUsers(id):
+  return User.query.filter_by(id=id).all()
 
 def getAllUsersByCollege(college):
-  pass
+  return User.query.filter_by(college=college).all()
 
 user_fields = {
-
+  'username': fields.String,
+  'name': fields.String,
+  'college': fields.String,
 }
 
 class UserAPI(Resource):
   def __init__(self):
-    pass
+    self.reqparse = reqparse.RequestParser()
+    self.reqparse.add_argument('username', type = str, required = True, help = "No username provided", location = 'json')
+    self.reqparse.add_argument('name', type = str, required = True, help = "No name provided", location = 'json')
+    self.reqparse.add_argument('college', type = str, required = True, help = "No college provided", location = 'json')
+    super(UserAPI, self).__init__()
 
   def get(self, id):
-    pass
+    if userExists(id):
+      abort(404)
+    return { 'user':marshal(getUser(id), user_fields) }
 
   def put(self, id):
-    pass
+    if checkUser(id):
+      args = self.reqparse.parse_args()
+      deleteUser(id)
+      user = User(args['username'], args['name'], args['college'])
+      addUser(user)
+      return {'user' : marshal(user, user_fields)}, 201
+    abort(404)
 
   def delete(self, id):
-    pass
+    deleteUser(id)
+    return {'result': True}
 
 api.add_resource(UserAPI, '/api/user/<int:id>', endpoint = 'user')
 
-users_fields = {
-
-}
-
 class UserListAPI(Resource):
   def __init__(self):
-    pass
+    self.reqparse = reqparse.RequestParser()
+    self.reqparse.add_argument('username', type = str, required = True, help = "No username provided", location = 'json')
+    self.reqparse.add_argument('name', type = str, required = True, help = "No name provided", location = 'json')
+    self.reqparse.add_argument('college', type = str, required = True, help = "No college provided", location = 'json')
+    super(UserListAPI, self).__init__()
 
   def get(self):
-    pass
+    return { 'users': map(lambda t: marshal(u, user_fields), getAllUsers()) }
 
   def post(self):
-    pass
+    args = self.reqparse.parse_args()
+    new_user = User(args['username'], args['name'], args['college'])
+    addUser(new_user)
+    return {'user' : marshal(new_user, user_fields)}, 201
 
 api.add_resource(UserListAPI, '/api/users/', endpoint = 'users')
 
@@ -68,10 +95,14 @@ users_by_college_fields = {
 
 class UsersByCollegeAPI(Resource):
   def _init__(self):
-    pass
+    self.reqparse = reqparse.RequestParser()
+    self.reqparse.add_argument('username', type = str, required = True, help = "No username provided", location = 'json')
+    self.reqparse.add_argument('name', type = str, required = True, help = "No name provided", location = 'json')
+    self.reqparse.add_argument('college', type = str, required = True, help = "No college provided", location = 'json')
+    super(UsersByCollegeAPI, self).__init__()
 
   def get(self, id):
-    pass
+    return { 'users': map(lambda t: marshal(u, user_fields), getAllUsersByCollege()) }
 
 api.add_resource(UsersByCollegeAPI, '/api/college/<int:id>/users', endpoint = 'users_by_college')
 
