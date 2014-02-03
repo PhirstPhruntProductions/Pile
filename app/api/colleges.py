@@ -11,69 +11,76 @@ api = Api(app)
 
 
 def collegeExists(id):
-  pass
+  if College.query.filter_by(id=id).first():
+    return True
+  return False
 
 def getCollege(id):
-  pass
+  return College.query.filter_by(id=id).first()
 
-def addCollege(user):
-  pass
+def addCollege(college):
+  db.session.add(college)
+  db.session.commit()
 
 def updateCollege(**kwargs):
   pass
 
 def deleteCollege(id):
-  pass
+  college = College.query.filter_by(id=id).first()
+  db.session.delete(college)
+  db.session.commit()
 
 def getAllColleges():
-  pass
+  return College.query.all()
 
 college_fields = {
-
+  'name': fields.String,
+  'emailstub': fields.String,
+  'numUsers': fields.Integer
 }
 
 class CollegeAPI(Resource):
   def __init__(self):
-    pass
+    self.reqparse = reqparse.RequestParser()
+    self.reqparse.add_argument('name', type = str, required = True, help = "No name provided", location = 'json')
+    self.reqparse.add_argument('emailstub', type = str, required = True, help = "No emailstub provided", location = 'json')
+    super(CollegeAPI, self).__init__()
 
   def get(self, id):
-    pass
+    if collegeExists(id):
+      return { 'college':marshal(getCollege(id), college_fields) }
+    abort(404)
 
   def put(self, id):
-    pass
+    if collegeExists(id):
+      args = self.reqparse.parse_args()
+      deleteCollege(id)
+      college = College(args['name'], args['emailstub'])
+      addCollege(college)
+      return {'college' : marshal(college, college_fields)}, 201
+    abort(404)
 
   def delete(self, id):
-    pass
+    deleteCollege(id)
+    return {'result': True}
 
 api.add_resource(CollegeAPI, '/api/college/<int:id>', endpoint = 'college')
 
-colleges_fields = {
-
-}
-
 class CollegeListAPI(Resource):
   def __init__(self):
-    pass
+    self.reqparse = reqparse.RequestParser()
+    self.reqparse.add_argument('name', type = str, required = True, help = "No name provided", location = 'json')
+    self.reqparse.add_argument('emailstub', type = str, required = True, help = "No emailstub provided", location = 'json')
+    super(CollegeListAPI, self).__init__()
 
   def get(self):
-    pass
+    return { 'colleges': map(lambda t: marshal(c, college_fields), getAllColleges()) }
 
   def post(self):
-    pass
+    args = self.reqparse.parse_args()
+    new_college = College(args['name'], args['emailstub'])
+    addCollege(new_college)
+    return {'college' : marshal(new_college, college_fields)}, 201
 
 api.add_resource(CollegeListAPI, '/api/colleges/', endpoint = 'colleges')
-
-#Potentially unnecessary
-colleges_by_name_fields = {
-
-}
-class CollegeByNameAPI(Resource):
-  def __init__(self):
-    pass
-
-  def get(self, id):
-    pass
-
-api.add_resource(CollegeByNameAPI, '/api/college_by_name/<string:name>', endpoint = 'college_by_name')
-
 

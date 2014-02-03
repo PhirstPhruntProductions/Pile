@@ -30,8 +30,8 @@ def deleteUser(id):
   db.session.delete(user)
   db.session.commit()
 
-def getAllUsers(id):
-  return User.query.filter_by(id=id).all()
+def getAllUsers():
+  return User.query.all()
 
 def getAllUsersByCollege(college):
   return User.query.filter_by(college=college).all()
@@ -52,11 +52,11 @@ class UserAPI(Resource):
 
   def get(self, id):
     if userExists(id):
-      abort(404)
-    return { 'user':marshal(getUser(id), user_fields) }
+      return { 'user':marshal(getUser(id), user_fields) }
+    abort(404)
 
   def put(self, id):
-    if checkUser(id):
+    if userExists(id):
       args = self.reqparse.parse_args()
       deleteUser(id)
       user = User(args['username'], args['name'], args['college'])

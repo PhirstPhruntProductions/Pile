@@ -10,28 +10,33 @@ from app import app
 api = Api(app)
 
 def itemExists(id):
-  pass
+  if Item.query.filter_by(id=id).first():
+    return True
+  return False
 
 def getItem(id):
-  pass
+  return Item.query.filter_by(id=id).first()
 
-def addItem(user):
-  pass
+def addItem(item):
+  db.session.add(item)
+  db.session.commit()
 
 def updateItem(**kwargs):
   pass
 
 def deleteItem(id):
-  pass
+  item = Item.query.filter_by(id=id).first():
+  db.session.add(item)
+  db.session.commit()
 
 def getAllItemsByCollege(college):
-  pass
+  return Item.query.filter_by(college=college).all()
 
 def getAllItemsByUser(user):
-  pass
+  return Item.query.filter_by(user=user).all()
 
 item_fields = {
-
+  
 }
 
 class ItemAPI(Resource):
