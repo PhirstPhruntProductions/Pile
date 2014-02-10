@@ -2,8 +2,8 @@
 #Imports go here
 from flask import jsonify, abort, request, make_response, url_for, g, flash, redirect, render_template
 from flask.ext.restful import Api, Resource, reqparse, fields, marshal, marshal_with
-from app import app
-from app.models.college import *
+from pile import app
+from pile.models.college import *
 
 #------------------------------------------------
 

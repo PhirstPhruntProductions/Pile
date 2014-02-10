@@ -1,5 +1,5 @@
-from app import db
-from app.custom_db.GUID import GUID
+from pile import db
+from pile.custom_db.GUID import GUID
 import uuid
 
 class College(db.Model):

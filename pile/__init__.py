@@ -17,7 +17,7 @@ mail.init_app(app)
 db = SQLAlchemy(app)
 
 #-----URL Routes for website
-from app.views import *
+from pile.views import *
 
 #-----Models form DB
 from models import user

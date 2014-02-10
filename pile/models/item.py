@@ -1,6 +1,6 @@
-from app import db
+from pile import db
 from datetime import datetime
-from app.custom_db.GUID import GUID
+from pile.custom_db.GUID import GUID
 import uuid
 
 item_types = ('Electronics', 'Books', 'Clothing', 'Dorm Items', 'Miscellaneous')
