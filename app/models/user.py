@@ -1,23 +1,25 @@
 from app import db
 from datetime import datetime
+from app.custom_db.GUID import GUID
+import uuid
 
 class User(db.Model):
   __tablename__ = 'users'
-  id = db.Column(db.Integer, primary_key=True)
-  username = db.Column(db.String(80), unique=True)
+  id = db.Column(GUID(), primary_key=True, default=uuid.uuid4())
+  email = db.Column(db.String(80), unique=True)
   name = db.Column(db.String(80))
-  college = db.Column(db.Integer,db.ForeignKey('college.id'))
-  items = db.relationship('Item',backref = 'seller', lazy = 'dynamic')	
+  password = db.Column(db.String(80))
+  college_id = db.Column(GUID() ,db.ForeignKey('colleges.id'))
   datejoined = db.Column(db.DateTime,default = db.func.now())
-  age = db.Column(db.Integer)
 
-  def __init__(self, username,name,college):
-    self.username = username
+  def __init__(self, name, email, password, college):
     self.name = name
-    self.college = college #MIGHT NEED TO DO MORE THAN THIS TO INITIALIZE
+    self.email = email
+    self.password = password
+    self.college = college
 
   def __repr__(self):
-    return #Put some string here
+    return '<User %r>' % self.name
 
 
   

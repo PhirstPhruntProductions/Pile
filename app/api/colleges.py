@@ -3,7 +3,7 @@
 from flask import jsonify, abort, request, make_response, url_for, g, flash, redirect, render_template
 from flask.ext.restful import Api, Resource, reqparse, fields, marshal, marshal_with
 from app import app
-
+from app.models.college import *
 
 #------------------------------------------------
 
@@ -35,15 +35,15 @@ def getAllColleges():
 
 college_fields = {
   'name': fields.String,
-  'emailstub': fields.String,
-  'numUsers': fields.Integer
+  'email_stub': fields.String,
+  'num_users': fields.Integer
 }
 
 class CollegeAPI(Resource):
   def __init__(self):
     self.reqparse = reqparse.RequestParser()
     self.reqparse.add_argument('name', type = str, required = True, help = "No name provided", location = 'json')
-    self.reqparse.add_argument('emailstub', type = str, required = True, help = "No emailstub provided", location = 'json')
+    self.reqparse.add_argument('email_stub', type = str, required = True, help = "No email_stub provided", location = 'json')
     super(CollegeAPI, self).__init__()
 
   def get(self, id):
@@ -55,7 +55,7 @@ class CollegeAPI(Resource):
     if collegeExists(id):
       args = self.reqparse.parse_args()
       deleteCollege(id)
-      college = College(args['name'], args['emailstub'])
+      college = College(args['name'], args['email_stub'])
       addCollege(college)
       return {'college' : marshal(college, college_fields)}, 201
     abort(404)
@@ -70,7 +70,7 @@ class CollegeListAPI(Resource):
   def __init__(self):
     self.reqparse = reqparse.RequestParser()
     self.reqparse.add_argument('name', type = str, required = True, help = "No name provided", location = 'json')
-    self.reqparse.add_argument('emailstub', type = str, required = True, help = "No emailstub provided", location = 'json')
+    self.reqparse.add_argument('email_stub', type = str, required = True, help = "No email_stub provided", location = 'json')
     super(CollegeListAPI, self).__init__()
 
   def get(self):
@@ -78,7 +78,7 @@ class CollegeListAPI(Resource):
 
   def post(self):
     args = self.reqparse.parse_args()
-    new_college = College(args['name'], args['emailstub'])
+    new_college = College(args['name'], args['email_stub'])
     addCollege(new_college)
     return {'college' : marshal(new_college, college_fields)}, 201
 

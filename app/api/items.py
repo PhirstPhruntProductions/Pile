@@ -25,7 +25,7 @@ def updateItem(**kwargs):
   pass
 
 def deleteItem(id):
-  item = Item.query.filter_by(id=id).first():
+  item = Item.query.filter_by(id=id).first()
   db.session.add(item)
   db.session.commit()
 
@@ -36,89 +36,101 @@ def getAllItemsByUser(user):
   return Item.query.filter_by(user=user).all()
 
 item_fields = {
-  
+  'name': fields.String,
+  'description': fields.String,
+  'contact_info': fields.String,
+  'price': fields.Integer, 
+  'user_id': fields.String,
+  'college_id': fields.String,
+  'item_type': fields.String,
 }
 
 class ItemAPI(Resource):
   def __init__(self):
-    pass
+    self.reqparse = reqparse.RequestParser()
+    self.reqparse.add_argument('name', type = str, required = True, help = "No name provided", location = 'json')
+    self.reqparse.add_argument('description', type = str, required = True, help = "No description provided", location = 'json')
+    self.reqparse.add_argument('contact_info', type = str, required = True, help = "No contact_info provided", location = 'json')
+    self.reqparse.add_argument('price', type = int, required = True, help = "No price provided", location = 'json')
+    self.reqparse.add_argument('item_type', type = str, required = True, help = "No item_type provided", location = 'json')
+    self.reqparse.add_argument('user_id', type = str, required = True, help = "No user_id provided", location = 'json')
+    super(ItemAPI, self).__init__()
 
   def get(self, id):
-    pass
+    if itemExists(id):
+      return { 'item':marshal(getItem(id), item_fields) }
+    abort(404)
 
   def put(self, id):
-    pass
+    if itemExists(id):
+      args = self.reqparse.parse_args()
+      deleteItem(id)
+      item = Item(args['name'], args['description'], args['contact_info'], args['price'], args['user_id'], getCollegeIDFromUserID(args['user_id']), args['item_type'])
+      addItem(item)
+      return {'item' : marshal(item, item_fields)}, 201 
+    abort(404)
 
   def delete(self, id):
-    pass
+    deleteItem(id)
+    return {'result': True}
 
 api.add_resource(ItemAPI, '/api/item/<int:id>', endpoint = 'item')
 
-items_fields = {
-
-}
-
 class ItemListAPI(Resource):
   def __init__(self):
-    pass
+    self.reqparse = reqparse.RequestParser()
+    self.reqparse.add_argument('name', type = str, required = True, help = "No name provided", location = 'json')
+    self.reqparse.add_argument('description', type = str, required = True, help = "No description provided", location = 'json')
+    self.reqparse.add_argument('contact_info', type = str, required = True, help = "No contact_info provided", location = 'json')
+    self.reqparse.add_argument('price', type = int, required = True, help = "No price provided", location = 'json')
+    self.reqparse.add_argument('item_type', type = str, required = True, help = "No item_type provided", location = 'json')
+    self.reqparse.add_argument('user_id', type = str, required = True, help = "No user_id provided", location = 'json')
+    super(ItemListAPI, self).__init__()
 
   def get(self):
-    pass
+    return { 'items': map(lambda t: marshal(i, item_fields), getAllItems()) }
 
   def post(self):
-    pass
+    args = self.reqparse.parse_args()
+    new_item = Item(args['name'], args['description'], args['contact_info'], args['price'], args['user_id'], getCollegeIDFromUserID(args['user_id']), args['item_type'])
+    addItem(new_item)
+    return {'item' : marshal(new_item, item_fields)}, 201
 
 api.add_resource(ItemListAPI, '/api/items/', endpoint = 'items')
 
-items_by_college_fields = {
-
-}
-
 class ItemsByCollegeAPI(Resource):
   def _init__(self):
-    pass
+    super(ItemsByCollegeAPI, self).__init__()
 
   def get(self, id):
-    pass
+    return { 'items': map(lambda t: marshal(i, item_fields), getAllItemsByCollege()) }
 
 api.add_resource(ItemsByCollegeAPI, '/api/college/<int:id>/items', endpoint = 'items_by_college')
 
-items_by_user_fields = {
-
-}
-
 class ItemsByUserAPI(Resource):
   def __init__(self):
-    pass
+    super(ItemsByUserAPI, self).__init__()
 
   def get(self, id):
-    pass
+    return { 'items': map(lambda t: marshal(i, item_fields), getAllItemsByUser()) }
 
 api.add_resource(ItemsByUserAPI, '/api/user/<int:id>/items', endpoint = 'items_by_user')
 
-items_by_type_fields = {
-
-}
-
 class ItemsByTypeAPI(Resource):
   def __init__(self):
-    pass
+    super(ItemsByCollegeAPI, self).__init__()
 
   def get(self, type):
-    pass
+    return { 'items': map(lambda t: marshal(i, item_fields), getAllItemsByType()) }
 
 api.add_resource(ItemsByTypeAPI, '/api/<string:type>/items', endpoint = 'items_by_type')
 
-items_by_search_fields = {
-
-}
-
 class ItemsByTextSearchAPI(Resource):
   def __init__(self):
-    pass
+    super(ItemsByTextSearchAPI, self).__init__()
 
   def get(self, text):
-    pass
+    return { 'items': map(lambda t: marshal(i, item_fields), getAllItemsByTextSearch()) }
 
 api.add_resource(ItemsByTypeAPI, '/api/items/search/<string:text>', endpoint = 'items_by_search')
 

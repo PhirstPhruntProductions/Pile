@@ -1,19 +1,18 @@
 from app import db
+from app.custom_db.GUID import GUID
+import uuid
 
 class College(db.Model):
   __tablename__ = 'colleges'
-  id = db.Column(db.Integer, primary_key = True)
+  id = db.Column(GUID(), primary_key=True, default=uuid.uuid4())
   name = db.Column(db.String(40), unique = True)
-  emailstub = db.Column(db.String(30), unique = True)
-  numUsers = db.Column(db.Integer)
-  students = db.relationship('Student',backref = 'college',lazy = 'dynamic')
-  verified = db.Column(db.Boolean)
+  email_stub = db.Column(db.String(30), unique = True)
+  num_users = db.Column(db.Integer)
 		
-  def __init__(self, name, emailstub):
+  def __init__(self, name, email_stub):
     self.name = name
-    self.emailstub = emailstub
-    self.numUsers = 0
-    self.verified = False
+    self.email_stub = email_stub
+    self.num_users = 0
 
   def __repr__(self):
     return '<College %r>' % self.name
