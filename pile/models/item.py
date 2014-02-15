@@ -6,13 +6,14 @@ import uuid
 item_types = ('Electronics', 'Books', 'Clothing', 'Dorm Items', 'Miscellaneous')
 class Item(db.Model):
   __tablename__ = 'items'
-  id = db.Column(GUID(), primary_key=True, default=uuid.uuid4())
+  id = db.Column(db.Integer(), primary_key=True)
+  public_id = db.Column(GUID(), unique=True, default=uuid.uuid4())
   name = db.Column(db.String(40))
   description = db.Column(db.String(300))
   contact_info = db.Column(db.String(300))
   price = db.Column(db.Integer)
-  user_id = db.Column(GUID(), db.ForeignKey('users.id'))
-  college_id = db.Column(GUID(), db.ForeignKey('colleges.id'))
+  user_id = db.Column(GUID(), db.ForeignKey('users.public_id'))
+  college_id = db.Column(GUID(), db.ForeignKey('colleges.public_id'))
   item_type = db.Column(db.Enum(*item_types))
   #image = db.Column(Photo(root="/Pile/app/Images",formats = {'big':'500 x 500'}))
   date_posted = db.Column(db.DateTime, default = db.func.now())

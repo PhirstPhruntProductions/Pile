@@ -4,7 +4,8 @@ import uuid
 
 class College(db.Model):
   __tablename__ = 'colleges'
-  id = db.Column(GUID(), primary_key=True, default=uuid.uuid4())
+  id = db.Column(db.Integer(), primary_key=True)
+  public_id = db.Column(GUID(), unique=True, default=uuid.uuid4())
   name = db.Column(db.String(40), unique = True)
   email_stub = db.Column(db.String(30), unique = True)
   num_users = db.Column(db.Integer)
