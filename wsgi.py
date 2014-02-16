@@ -7,6 +7,6 @@ app.logger.addHandler(file_handler)from pile import app
 
 if __name__ == "__main__":
   try:
-    app.run(debug=True)
+    app.run()
   except Exception:
     app.logger.exception('Failed')
