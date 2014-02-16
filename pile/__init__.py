@@ -31,5 +31,15 @@ from api.items import *
 
 db.create_all()
 
+import logging
+from logging import FileHandler
+file_handler = FileHandler('mylog.log')
+file_handler.setLevel(logging.DEBUG)
+app.logger.addHandler(file_handler)
+
 if __name__=='__main__':
-  app.run()
+  try:
+    app.run(debug=True)
+  except Exception:
+    app.logger.exception('Failed')
+
