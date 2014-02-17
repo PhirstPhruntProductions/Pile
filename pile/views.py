@@ -4,7 +4,6 @@ from pile import app
 @app.route('/')
 @app.route('/index/')
 def index():
-  print getUserData
   return render_template('index.html')
 
 

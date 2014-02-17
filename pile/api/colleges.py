@@ -74,7 +74,7 @@ class CollegeListAPI(Resource):
     super(CollegeListAPI, self).__init__()
 
   def get(self):
-    return { 'colleges': map(lambda t: marshal(c, college_fields), getAllColleges()) }
+    return { 'colleges': map(lambda c: marshal(c, college_fields), getAllColleges()) }
 
   def post(self):
     args = self.reqparse.parse_args()

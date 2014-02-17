@@ -3,6 +3,7 @@
 from flask import jsonify, abort, request, make_response, url_for, g, flash, redirect, render_template
 from flask.ext.restful import Api, Resource, reqparse, fields, marshal, marshal_with
 from pile import app
+from pile.models.item import *
 
 
 #------------------------------------------------
@@ -28,6 +29,9 @@ def deleteItem(id):
   item = Item.query.filter_by(id=id).first()
   db.session.add(item)
   db.session.commit()
+
+def getAllItems():
+  return Item.query.all() 
 
 def getAllItemsByCollege(college):
   return Item.query.filter_by(college=college).all()
