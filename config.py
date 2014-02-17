@@ -18,7 +18,8 @@ SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
 #-----Config Admins
-ADMINS = ['chumbleya@gmail.com', 'hreinmit@gmail.com']
+ADMINS = ['chumbleya@gmail.com']
 
 #-----Config Upload folder
 UPLOAD_FOLDER = os.path.realpath('./app') + '/uploads'
+
