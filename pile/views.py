@@ -1,18 +1,5 @@
 from flask import render_template
 from pile import app
-import MySQLdb
-
-def getUserData():
-  db = MySQLdb.connect(host="localhost",
-                     user="achumbley",
-                      passwd="CampusStew18",
-                      db="dev")
-  cur = db.cursor() 
-  cur.execute("SELECT * FROM users")
-
-  for row in cur.fetchall() :
-    print row[0]
-  
 
 @app.route('/')
 @app.route('/index/')
